@@ -1,8 +1,7 @@
 from database import Base
 from sqlalchemy import Column, Integer, String, Boolean, Text, ForeignKey, Float
 from sqlalchemy.orm import relationship
-from sqlalchemy_utils.types import ChoiceType
-
+from sqlalchemy_utils import ChoiceType
 
 class Users(Base):
     __tablename__ = 'users'
@@ -12,11 +11,10 @@ class Users(Base):
     password = Column(Text)
     is_staff = Column(Boolean, default=False)
     is_active = Column(Boolean, default=True)
-    order = relationship('Orders', back_populates='users')
+    orders = relationship('Orders', back_populates='user')
 
     def __repr__(self):
-        return f"<Id = {self.id} - username = {self.username} - email = {self.email}>"
-
+        return f"<User(Id={self.id}, username={self.username}, email={self.email})>"
 
 class Products(Base):
     __tablename__ = 'products'
@@ -24,12 +22,10 @@ class Products(Base):
     name = Column(String(32), unique=True, index=True)
     description = Column(Text)
     price = Column(Float)
-    order = relationship('Orders', back_populates='products')
-
+    orders = relationship('Orders', back_populates='product')
 
     def __repr__(self):
-        return f"<Id = {self.id} - name = {self.name}>"
-
+        return f"<Product(Id={self.id}, name={self.name})>"
 
 class Orders(Base):
     ORDER_STATUS = (
@@ -48,8 +44,4 @@ class Orders(Base):
     product = relationship('Products', back_populates='orders')
 
     def __repr__(self):
-        return f"<Id = {self.id} - user = {self.product_id} - product = {self.product} - status = {self.status}>"
-
-
-
-
+        return f"<Order(Id={self.id}, user_id={self.user_id}, product_id={self.product_id}, status={self.status})>"

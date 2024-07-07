@@ -5,12 +5,13 @@ from typing import Optional
 class SignUp(BaseModel):
     id: Optional[int] = None
     username: str
-    email: EmailStr
+    email: str
     password: str
-    is_staff: bool = False
-    is_active: bool = True
+    is_staff: bool
+    is_active: bool
 
     class Config:
+        from_attributes = True
         json_schema_extra = {
             'example': {
                 "username": 'john_doe03',
