@@ -1,5 +1,6 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, Field
 from typing import Optional
+
 
 
 class SignUp(BaseModel):
@@ -21,3 +22,12 @@ class SignUp(BaseModel):
                 "is_active": True
             }
         }
+
+
+class LoginModel(BaseModel):
+    username_or_email: str
+    password: str
+
+
+class Settings(BaseModel):
+    authjwt_secret_key: str = "80b6fd5b764042a7e392d48df7b46422276cfbe2189d9b933397251dd38e8e70"
