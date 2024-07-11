@@ -6,4 +6,4 @@ DATABASE_URL = "postgresql://postgres:missdezi06@localhost/fastapi_project"
 engine = create_engine(DATABASE_URL)
 
 Base = declarative_base()
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+session = sessionmaker(autocommit=False, autoflush=False, bind=engine)

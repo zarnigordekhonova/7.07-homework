@@ -38,7 +38,7 @@ class Orders(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey('users.id'))
     product_id = Column(Integer, ForeignKey('products.id'))
-    status = Column(ChoiceType(ORDER_STATUS), default='PENDING')
+    status = Column(String, default='PENDING')
     quantity = Column(Integer, nullable=True)
     user = relationship('Users', back_populates='orders')
     product = relationship('Products', back_populates='orders')
