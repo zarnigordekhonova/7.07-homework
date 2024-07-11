@@ -3,7 +3,7 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import HTTPException
 from fastapi import FastAPI
 from database import session, engine
-from schemas_auth import OrdersModel
+from schemas_auth import OrdersModel, OrdersUpdateModel
 from models import Orders, Users
 from fastapi_jwt_auth import AuthJWT
 
@@ -102,6 +102,43 @@ async def get_order_id(id: int, Authorize: AuthJWT = Depends()):
     if not order:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Order not found")
     return order
+
+
+@orders_router.patch("/orders_update/{id}")
+async def orders_update(id: int, orders_update: OrdersUpdateModel, Authorize: AuthJWT=Depends()):
+    try:
+        Authorize.jwt_required()
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
+
+    current_user = Authorize.get_jwt_subject()
+    user = session.query(Users).filter(Users.username == current_user).first()
+    order = session.query(Orders).filter(Orders.id == id).first()
+
+    if not user.id == order.user_id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
+
+    if not order:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Order not found")
+
+    if orders_update.product_id is not None:
+        order.product_id = orders_update.product_id
+
+    if orders_update.quantity is not None:
+        order.quantity = orders_update.quantity
+
+    if orders_update.status is not None:
+        order.status = orders_update.status
+
+    session.commit()
+    session.refresh(order)
+
+    return {
+        "message": "Order updated successfully",
+        "order": order
+    }
+
+
 
 
 @orders_router.delete('/delete/{id}')

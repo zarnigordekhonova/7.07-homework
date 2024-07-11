@@ -87,4 +87,15 @@ class ProductUpdateModel(BaseModel):
         orm_mode = True
 
 
+class OrdersUpdateModel(BaseModel):
+    product_id: Optional[int] = None
+    status: Optional[str] = None
+    quantity: Optional[int] = None
+
+
+    class Config:
+        orm_mode = True
+
+
+
 
