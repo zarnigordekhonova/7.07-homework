@@ -139,8 +139,6 @@ async def orders_update(id: int, orders_update: OrdersUpdateModel, Authorize: Au
     }
 
 
-
-
 @orders_router.delete('/delete/{id}')
 async def delete_order(id: int, Authorize: AuthJWT = Depends()):
     try:

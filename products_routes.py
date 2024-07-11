@@ -16,6 +16,7 @@ async def products_list():
         'message': 'Page for Products-details'
     }
 
+
 @product_router.post("/add")
 async def get_products(product: ProductsModel, Authorize: AuthJWT=Depends()):
     try:
@@ -53,6 +54,7 @@ async def get_list(Authorize: AuthJWT=Depends()):
         product = session.query(Products).all()
         return product
 
+
 @product_router.patch("/update/{id}")
 async def update_product(id: int, update_product: ProductUpdateModel, Authorize: AuthJWT = Depends()):
     try:
@@ -87,11 +89,6 @@ async def update_product(id: int, update_product: ProductUpdateModel, Authorize:
     }
 
 
-
-
-
-
-
 @product_router.get("/{id}")
 async def get_id_product(id: int, Authorize: AuthJWT=Depends()):
     try:
@@ -108,6 +105,7 @@ async def get_id_product(id: int, Authorize: AuthJWT=Depends()):
     if not product:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
     return product
+
 
 @product_router.delete("/delete/{id}")
 async def delete_product(id: int, Authorize: AuthJWT=Depends()):
